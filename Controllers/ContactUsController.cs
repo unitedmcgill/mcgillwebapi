@@ -6,12 +6,13 @@ using McGillWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using McGillWebAPI.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace McGillWebAPI.Controllers
 {
-    [Route("api/contactus")]
+    [Route("api/[controller]")]
     // [Authorize]  use OAuth2 flows 
     // JwtBearer -- Microsoft.AspNetCore.AuthenticationJwtBearer to package.json
     
@@ -30,6 +31,7 @@ namespace McGillWebAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get(){
             // If soemthing bad happended, we can return an error
             // return BadRequest("bad things happened")  // 400 status w/ message is returned
@@ -68,6 +70,7 @@ namespace McGillWebAPI.Controllers
 
         // GET api/contactus/5
         [HttpGet("{id}")]  // FYI, {id:int} inline constraint will force the parameter to only match if an int parameter is specified
+        [AllowAnonymous]
         public Contact Get(int id)
         {
             return null; //Get().Where( r => r.Id == id).FirstOrDefault();;
@@ -75,6 +78,7 @@ namespace McGillWebAPI.Controllers
 
         // POST api/contactus
         [HttpPost]
+        [AllowAnonymous]
         // Is nice to use a ContactUsViewModel instead of the Models
         // Then put [Required], etc. on the ViewModel instead of the Model
         // This will allow you to hide the information like Id, etc.
@@ -105,12 +109,14 @@ namespace McGillWebAPI.Controllers
 
         // PUT api/contactus/5
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public void Put(int id, [FromBody]string value)
         {
         }
 
         // DELETE api/contactus/5
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public void Delete(int id)
         {
         }

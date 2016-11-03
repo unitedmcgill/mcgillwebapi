@@ -96,7 +96,7 @@ namespace McGillWebAPI.Controllers
                 // https://app.pluralsight.com/player?course=aspdotnetcore-efcore-bootstrap-angular-web-app&author=shawn-wildermuth&name=aspdotnetcore-efcore-bootstrap-angular-web-app-m7&clip=4&mode=live
 
                 await _mailService.SendMail(_config["MailSettings:ToAddress"], 
-                theContact.Name, theContact.Email, "ContactUs-unitedmcgill.com", 
+                theContact.Name, theContact.Email, "ContactUs-"+theContact.ForWebsiteDomain, 
                 theContact.TheMessage + "\n My phone:" + theContact.Phone + 
                 "\n My company:" + theContact.Company);
 

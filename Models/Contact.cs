@@ -13,6 +13,7 @@ namespace McGillWebAPI.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public string TheMessage { get; set; }
+        public string ForWebsiteDomain { get; set; }
         public Contact()
         {
         }

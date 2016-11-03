@@ -12,6 +12,9 @@ using Microsoft.Extensions.Configuration;
 namespace McGillWebAPI.Controllers
 {
     [Route("api/contactus")]
+    // [Authorize]  use OAuth2 flows 
+    // JwtBearer -- Microsoft.AspNetCore.AuthenticationJwtBearer to package.json
+    
     public class ContactUsController : Controller
     {
         //private MailService _mailService = new MailService();
@@ -64,7 +67,7 @@ namespace McGillWebAPI.Controllers
         // }
 
         // GET api/contactus/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]  // FYI, {id:int} inline constraint will force the parameter to only match if an int parameter is specified
         public Contact Get(int id)
         {
             return null; //Get().Where( r => r.Id == id).FirstOrDefault();;
@@ -76,6 +79,9 @@ namespace McGillWebAPI.Controllers
         // Then put [Required], etc. on the ViewModel instead of the Model
         // This will allow you to hide the information like Id, etc.
         // basically stuff not used in the view
+        // [Produces(typeof(Contact)) ]
+        // [Produces("application/json", Type = typeof(Contact)) ]
+        // You can limit received types with [Consumes]
         public async Task<IActionResult> Post([FromBody]Contact theContact)
         {
             // Do something
@@ -85,9 +91,13 @@ namespace McGillWebAPI.Controllers
                 // Use AutoMappers
                 // https://app.pluralsight.com/player?course=aspdotnetcore-efcore-bootstrap-angular-web-app&author=shawn-wildermuth&name=aspdotnetcore-efcore-bootstrap-angular-web-app-m7&clip=4&mode=live
 
-                await _mailService.SendMail(_config["MailSettings:ToAddress"], theContact.Name, theContact.Email, "ContactUs-unitedmcgill.com", theContact.TheMessage);
+                await _mailService.SendMail(_config["MailSettings:ToAddress"], 
+                theContact.Name, theContact.Email, "ContactUs-unitedmcgill.com", 
+                theContact.TheMessage + "\n My phone:" + theContact.Phone + 
+                "\n My company:" + theContact.Company);
 
                 return Created($"api/contactus/{theContact.Name}", theContact);
+                //return Ok(true);
             }
 
             return BadRequest(ModelState);

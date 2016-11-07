@@ -111,6 +111,7 @@ namespace McGillWebAPI.Controllers
         return Task.FromResult(new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"),
           new[]
           {
+            // Make the claim required by DisneyUser defined in Startup.cs and API marked as DisneyUser from that definition
             new Claim("DisneyCharacter", "IAmMickey")
           }));
       }

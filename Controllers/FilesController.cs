@@ -45,6 +45,9 @@ namespace McGillWebAPI.Controllers
                 var foo = new DoMathThings();
                 int result = foo.AddTwoNumbers(1,2);
                 long size = 0;
+                var savePath = "";
+                Microsoft.AspNetCore.Http.IFormFile lastFile = null;
+
                 foreach(var file in Request.Form.Files)
                 {
                     var contentType = file.ContentType;
@@ -53,20 +56,32 @@ namespace McGillWebAPI.Controllers
                                     .FileName
                                     .Trim('"');
                     size += file.Length;
-                    var savePath = Path.Combine(_hostingEnvironment.WebRootPath, _config["FileUploadSettings:Uploads"], filename);  
+                    savePath = Path.Combine(_hostingEnvironment.WebRootPath, _config["FileUploadSettings:Uploads"], filename);  
 
                     using (var fileStream = new FileStream(savePath, FileMode.Create))
                     {
                         await file.OpenReadStream().CopyToAsync(fileStream);
                     }
-
-                    return Created(savePath, file);
+                    lastFile = file;
                 }
+                
+                return Created(savePath, lastFile);
             }
 
             return BadRequest();
         }
-    
+        
+        // GET api/files/code = 10-digit code 0-9, A-F
+        [HttpGetAttribute("{code}")]
+        [AllowAnonymous]
+        public IActionResult Get()
+        {
+            string sErrorMsg = String.Empty;
+            List<ShareFileData> outputFiles = new List<ShareFileData>();
+            
+            return Ok();
+        }
+
         // GET api/contactus/5
         // [HttpGet("{id}")]  // FYI, {id:int} inline constraint will force the parameter to only match if an int parameter is specified
         // [AllowAnonymous]

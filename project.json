@@ -19,7 +19,8 @@
     "MailKit": "1.8.1",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
     "Microsoft.AspNetCore.Cors" : "1.0.0",
-    "Microsoft.AspNet.Http" : "1.0.0-rc1-final"
+    "Microsoft.AspNet.Http" : "1.0.0-rc1-final",
+    "McGill.Web":"1.0.1"
   },
 
   "tools": {
@@ -31,10 +32,7 @@
       "imports": [
         "dotnet5.6",
         "portable-net45+win8"
-      ],
-      "dependencies": {
-        "McGill.Web" : "1.0.1"
-      }
+      ]
     }
   },
 

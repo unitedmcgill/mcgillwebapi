@@ -42,8 +42,6 @@ namespace McGillWebAPI.Controllers
         {
             if (Request.Form.Files != null && Request.Form.Files.Count > 0)
             {
-                var foo = new DoMathThings();
-                int result = foo.AddTwoNumbers(1,2);
                 long size = 0;
                 var savePath = "";
                 Microsoft.AspNetCore.Http.IFormFile lastFile = null;

@@ -1,5 +1,9 @@
 # Welcome to ASP.NET Core
 
+** To run controller from a command prompt:  dotnet run
+** To run controller from vscode, F5
+Runs on port 5001
+
 We've made some big updates in this release, so it’s **important** that you spend a few minutes to learn what’s new.
 
 You've created a new ASP.NET Core project. [Learn what's new](https://go.microsoft.com/fwlink/?LinkId=518016)

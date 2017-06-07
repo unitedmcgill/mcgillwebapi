@@ -60,8 +60,15 @@ namespace McGillWebAPI.Controllers
             decimal Yield;
             decimal Buckling;
 
-            stack.PassFail = AirFlowTechTools.CalcStack(stack.Material, Gauge, Spiral, Diameter, Wind, SafetyFactor, Height, out Velocity, out Stress, out Buckling, out Yield, out Deflection);
-
+            try 
+            {
+                stack.PassFail = AirFlowTechTools.CalcStack(stack.Material, Gauge, Spiral, Diameter, Wind, SafetyFactor, Height, out Velocity, out Stress, out Buckling, out Yield, out Deflection);
+            }
+            catch ( Exception ex )
+            {
+                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
+            }
+            
             stack.Velocity = Velocity;
             stack.Stress = Stress;
             stack.Deflection = Deflection;

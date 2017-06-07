@@ -89,13 +89,20 @@ namespace McGillWebAPI.Controllers
             decimal ActualDeflection;
             decimal MaxLength;
 
-            if ( Insulation == 0 )
+            try
             {
-                support.PassFail = AirFlowTechTools.CalcSupport(support.Material, InnerGauge, Spiral, Diameter, RingSpacing, Load, Density, Wind, Snow, SafetyFactor, out MaterialLoad, out AllowedDeflection, out ActualDeflection, out MaxLength);
+                if ( Insulation == 0 )
+                {
+                    support.PassFail = AirFlowTechTools.CalcSupport(support.Material, InnerGauge, Spiral, Diameter, RingSpacing, Load, Density, Wind, Snow, SafetyFactor, out MaterialLoad, out AllowedDeflection, out ActualDeflection, out MaxLength);
+                }
+                else 
+                {
+                    support.PassFail = AirFlowTechTools.CalcSupport( Insulation, support.Material, InnerGauge, OuterGauge, Spiral, Diameter, RingSpacing, Load, Density, Wind, Snow, SafetyFactor, out MaterialLoad, out AllowedDeflection, out ActualDeflection, out MaxLength);
+                }
             }
-            else 
+            catch ( Exception ex )
             {
-                support.PassFail = AirFlowTechTools.CalcSupport( Insulation, support.Material, InnerGauge, OuterGauge, Spiral, Diameter, RingSpacing, Load, Density, Wind, Snow, SafetyFactor, out MaterialLoad, out AllowedDeflection, out ActualDeflection, out MaxLength);
+                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
             }
 
             support.MaterialLoad = MaterialLoad;

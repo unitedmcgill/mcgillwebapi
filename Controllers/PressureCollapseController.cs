@@ -45,7 +45,15 @@ namespace McGillWebAPI.Controllers
             }
 
             decimal CollapsePressure;
-            CollapsePressure = AirFlowTechTools.CalcNegativePressureNoStiffeners(operatingPressure.Material, Gauge, Spiral, Diameter, DuctTemp);
+            try
+            {
+                CollapsePressure = AirFlowTechTools.CalcNegativePressureNoStiffeners(operatingPressure.Material, Gauge, Spiral, Diameter, DuctTemp);
+            }
+            catch ( Exception ex )
+            {
+                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
+            }
+
             operatingPressure.OperatingPressure = 0;
             operatingPressure.Pressure = CollapsePressure;
             

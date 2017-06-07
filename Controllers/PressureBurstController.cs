@@ -45,7 +45,16 @@ namespace McGillWebAPI.Controllers
             }
 
             decimal BurstPressure;
-            BurstPressure = AirFlowTechTools.CalcBurstPressure( operatingPressure.Material, Gauge, Spiral, Diameter, DuctTemp);
+            
+            try
+            {
+                BurstPressure = AirFlowTechTools.CalcBurstPressure( operatingPressure.Material, Gauge, Spiral, Diameter, DuctTemp);
+            }
+            catch ( Exception ex )
+            {
+                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
+            }
+
             operatingPressure.OperatingPressure = BurstPressure/10;
             operatingPressure.Pressure = BurstPressure;
             

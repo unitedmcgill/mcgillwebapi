@@ -52,7 +52,15 @@ namespace McGillWebAPI.Controllers
             // decimal mOvalMajor, decimal mDiamter, decimal mMinor,out decimal mResult1, out decimal mResult2)
             decimal StiffenerSpacing;
             string StiffenerSize;
-            StiffenerSpacing = AirFlowTechTools.CalcStiffenerSpacing( operatingPressure.Material, Gauge, Spiral, Diameter, Pressure, DuctTemp, out StiffenerSize );
+            try 
+            {
+                StiffenerSpacing = AirFlowTechTools.CalcStiffenerSpacing( operatingPressure.Material, Gauge, Spiral, Diameter, Pressure, DuctTemp, out StiffenerSize );
+            }
+            catch ( Exception ex )
+            {
+                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
+            }
+            
             operatingPressure.StiffenerSpacing = StiffenerSpacing;
             operatingPressure.StiffenerSize = StiffenerSize;
             

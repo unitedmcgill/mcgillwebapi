@@ -64,7 +64,15 @@ namespace McGillWebAPI.Controllers
             // decimal mOvalMajor, decimal mDiamter, decimal mMinor,out decimal mResult1, out decimal mResult2)
             decimal OperatingPressure;
             string StiffenerSize;
-            OperatingPressure = AirFlowTechTools.CalcOperatingPressure( operatingPressure.Material, Gauge, Spiral, Diameter, StiffenerSpacing, DuctTemp, out StiffenerSize );
+            try
+            {
+                OperatingPressure = AirFlowTechTools.CalcOperatingPressure( operatingPressure.Material, Gauge, Spiral, Diameter, StiffenerSpacing, DuctTemp, out StiffenerSize );
+            }
+            catch ( Exception ex )
+            {
+                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
+            }
+
             operatingPressure.OperatingPressure = OperatingPressure;
             operatingPressure.StiffenerSize = StiffenerSize;
             

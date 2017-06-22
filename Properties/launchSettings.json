@@ -19,7 +19,7 @@
     "McGillWebAPI": {
       "commandName": "Project",
       "launchBrowser": false,
-      "launchUrl": "http://localhost:5001/api/values",
+      "launchUrl": "http://*:443/api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

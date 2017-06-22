@@ -24,7 +24,7 @@ namespace McGillWebAPI
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5001")
+                .UseUrls("http://*:443")
                 .Build();
 
             host.Run();

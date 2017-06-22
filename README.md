@@ -2,7 +2,7 @@
 
 ** To run controller from a command prompt:  dotnet run
 ** To run controller from vscode, F5
-Runs on port 5001
+Runs on port 443
 
 We've made some big updates in this release, so it’s **important** that you spend a few minutes to learn what’s new.
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using McGillWebAPI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting;

@@ -61,7 +61,12 @@ namespace McGillWebAPI.Controllers
             }
             catch ( Exception ex )
             {
-                return BadRequest(ex.Message + "InnerEx:" + ex.InnerException.Message);
+                Console.WriteLine(ex.Message);
+                if ( ex.InnerException.Message != null )
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+                return BadRequest(ex.Message);
             }
            
             return Ok(reinforcement);

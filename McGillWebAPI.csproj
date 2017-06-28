@@ -32,7 +32,7 @@
     <PackageReference Include="MailKit" Version="1.16.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.2" />
-    <PackageReference Include="McGill.Web" Version="1.0.1" />
+    <PackageReference Include="McGill.Web" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

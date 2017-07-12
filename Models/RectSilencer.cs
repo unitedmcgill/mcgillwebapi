@@ -22,7 +22,7 @@ namespace McGillWebAPI.Models
         public int Acceptable {get; set;}       
         public double Velocity {get; set;}
         public string Type {get; set;}
-
+        public int Selected {get; set;}
         public RectResult()
         {
 

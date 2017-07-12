@@ -186,6 +186,9 @@ namespace McGillWebAPI.Controllers
                     interData.Acceptable = 0;
                     interData.Type = startData.Type;
 
+                    // Default Selected to false
+                    interData.Selected = 0;
+
                     interpolation.Add(interData);
                 }
 

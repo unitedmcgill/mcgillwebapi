@@ -14,7 +14,7 @@ namespace McGillWebAPI.Controllers
     [Route("api/[controller]")]
     public class RectSilencerController : Controller
     {   
-        private static int RetangularSort(RectResult a, RectResult b)
+        private static int RetangularSort(SilencerResult a, SilencerResult b)
         {
             int nResult = -1 * a.Acceptable.CompareTo(b.Acceptable);
 
@@ -144,6 +144,21 @@ namespace McGillWebAPI.Controllers
                     return BadRequest("Error in RectSilencerInput, Freq8 convert failed.");
                 }
 
+                // Validate the input
+                if ( dHeight < 0 ) return BadRequest("Height cannot be negative.");
+                if ( dWidth < 0 ) return BadRequest("Width cannot be negative.");
+                if ( dPressureDrop < 0 ) return BadRequest("Pressure Drop cannot be negative.");
+                if ( dOne < 0 ) return BadRequest("Frequency(1) cannot be negative.");
+                if ( dTwo < 0 ) return BadRequest("Frequency(2) cannot be negative.");
+                if ( dThree < 0 ) return BadRequest("Frequency(3) cannot be negative.");
+                if ( dFour < 0 ) return BadRequest("Frequency(4) cannot be negative.");
+                if ( dFive < 0 ) return BadRequest("Frequency(5) cannot be negative.");
+                if ( dSix < 0 ) return BadRequest("Frequency(6) cannot be negative.");
+                if ( dSeven < 0 ) return BadRequest("Frequency(7) cannot be negative.");
+                if ( dEight < 0 ) return BadRequest("Frequency(8) cannot be negative.");
+
+                // if ( dDiameter > 100 || dDiameter < 0 ) return BadReqeust("Diameter limited to sizes between 4 and 100 inches inclusive.");
+
                 // Read the database
                 AirSilenceContext context = new AirSilenceContext();
                 
@@ -160,14 +175,14 @@ namespace McGillWebAPI.Controllers
 
                 List<RectSilencer> rawData = new List<RectSilencer>();
                 rawData = rawResult.ToList();
-                List<RectResult> interpolation = new List<RectResult>();
+                List<SilencerResult> interpolation = new List<SilencerResult>();
 
                 for (int i = 0; i < rawData.Count; i += 2)
                 {
                     RectSilencer startData = rawData[i];
                     RectSilencer endData = rawData[i + 1];
 
-                    RectResult interData = new RectResult();
+                    SilencerResult interData = new SilencerResult();
                     interData.Model = startData.Model;
                     interData.Length = startData.Length;
                     interData.Velocity = UMCLib.ConvertToInt32(dCalcVelocity);
@@ -201,7 +216,7 @@ namespace McGillWebAPI.Controllers
                     bool bAlmostAcoustics = false;
                     bool bAcceptableAcoustics = false;
 
-                    RectResult interData = interpolation[i];
+                    SilencerResult interData = interpolation[i];
 
                     if (interData.PressureDrop <= dPressureDrop * 1.5D)
                     {
@@ -262,10 +277,10 @@ namespace McGillWebAPI.Controllers
                     }
                 }
 
-                rectsilencer.Silencers = new List<RectResult>();
+                rectsilencer.Silencers = new List<SilencerResult>();
                 for (int i = 0; i < interpolation.Count; i++)
                 {
-                    RectResult interData = interpolation[i];
+                    SilencerResult interData = interpolation[i];
 
                     if (!String.IsNullOrEmpty(rectsilencer.Type) && interData.Type != rectsilencer.Type)
                     {

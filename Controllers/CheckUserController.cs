@@ -20,6 +20,7 @@ namespace McGillWebAPI.Controllers
         {
             IPAddress clientIP = Request.HttpContext.Connection.RemoteIpAddress;
             string IP = clientIP.ToString();
+            Console.WriteLine(IP);
             if ( IP.Length >= 3)
             {
                 if (IP.Substring(0,3)=="::1")
@@ -31,7 +32,7 @@ namespace McGillWebAPI.Controllers
                 {
                     if ( IP.Substring(0,3)=="192" )
                     {
-                        if ( IP.Substring(5,3)=="168")
+                        if ( IP.Substring(4,3)=="168")
                         {
                             return Ok("1");
                         }

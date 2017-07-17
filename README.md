@@ -1,43 +1,105 @@
-# Welcome to ASP.NET Core
+==================================
+Local development machine
+==================================
+c:\d-drive\project\core\McGill.Web\code .
+c:\d-drive\project\core\McGillWebAPI\code .
+c:\d-drive\project\angular2\unitedmcgill\code .
 
-** To run controller from a command prompt:  dotnet run
-** To run controller from vscode, F5
-Runs on port 5001
+-----------------
+Start server code
+-----------------
+c:\d-drive\project\core\McGillWebAPI\dotnet run
+debug from inside vscode w/out dotnet run
 
-We've made some big updates in this release, so it’s **important** that you spend a few minutes to learn what’s new.
+-----------------
+Client code
+-----------------
+c:\d-drive\project\angular2\unitedmcgill\ng serve
+debug from inside vscode w/ ng serve
 
-You've created a new ASP.NET Core project. [Learn what's new](https://go.microsoft.com/fwlink/?LinkId=518016)
+----------------
+deploy
+----------------
+dotnet publish -f netcoreapp1.1 -c Release
+Delete destination folder contents
+Copy contents of bin\release\netcoreapp1.1\publish to destination IIS folder (see below how to setup)
+// if you want to run in a command prompt, dotnet mcgillwebapi.dll from the server folder
 
-## This application consists of:
 
-*   Sample pages using ASP.NET Core MVC
-*   [Bower](https://go.microsoft.com/fwlink/?LinkId=518004) for managing client-side libraries
-*   Theming using [Bootstrap](https://go.microsoft.com/fwlink/?LinkID=398939)
+---------------------------------
+Host ASP.NET CORE with IIS
+---------------------------------
+Install the .NET Core Windows Server Hosting bundle:  https://go.microsoft.com/fwlink/?linkid=844461
+This will give a AspNetCoreModule in the Modules of IIS
+publish the ASP.NET core:  dotnet publish -f netcoreapp1.1 -c Release and copy the output to the server
+create a new IIS Application Pool for AspDotNetCore if you don't already have one, set to No Managed Code
+Create your new application under an existing site or create a new one and add the application to it
+Set the Physical path to the output folder on the server you created
+set bindings and start the site it will create a reverse proxy to your application
 
-## How to
 
-*   [Add a Controller and View](https://go.microsoft.com/fwlink/?LinkID=398600)
-*   [Add an appsetting in config and access it in app.](https://go.microsoft.com/fwlink/?LinkID=699562)
-*   [Manage User Secrets using Secret Manager.](https://go.microsoft.com/fwlink/?LinkId=699315)
-*   [Use logging to log a message.](https://go.microsoft.com/fwlink/?LinkId=699316)
-*   [Add packages using NuGet.](https://go.microsoft.com/fwlink/?LinkId=699317)
-*   [Add client packages using Bower.](https://go.microsoft.com/fwlink/?LinkId=699318)
-*   [Target development, staging or production environment.](https://go.microsoft.com/fwlink/?LinkId=699319)
+----------------------------------
+Use weblistener instead of kestrel
+----------------------------------
+** STUCK HERE CORS is not working in WebListener **
+Add  
+    <PackageReference Include="Microsoft.AspNetCore.Server.WebListener" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Net.Http.Server" Version="1.1.2" />
+to .csproj
 
-## Overview
+Call the UseWebListener extension method on WebHostBuilder in your Main method, specifying any WebListener options and settings that you need in Program.cs
+                .UseWebListener(options =>
+                {
+                        options.ListenerSettings.Authentication.Schemes = AuthenticationSchemes.None;
+                        options.ListenerSettings.Authentication.AllowAnonymous = true;
+                })
+Preregister URL prefixes for the port you want to use
+netsh http show urlacl
+Make sure the one you want to reserve is available, if not, delete the existing one
+netsh http delete urlacl url=https://+:443/C574AC30-5794-4AEE-B1BB-6651C5315029/
+netsh http delete urlacl url=https://+:443/sra_{BA195980-CD49-458b-9E23-C84EE0ADCD75}/
+netsh http add urlacl url=http://+:443/ user=jcourtney
+** STUCK HERE CORS is not working in WebListener **
 
-*   [Conceptual overview of what is ASP.NET Core](https://go.microsoft.com/fwlink/?LinkId=518008)
-*   [Fundamentals of ASP.NET Core such as Startup and middleware.](https://go.microsoft.com/fwlink/?LinkId=699320)
-*   [Working with Data](https://go.microsoft.com/fwlink/?LinkId=398602)
-*   [Security](https://go.microsoft.com/fwlink/?LinkId=398603)
-*   [Client side development](https://go.microsoft.com/fwlink/?LinkID=699321)
-*   [Develop on different platforms](https://go.microsoft.com/fwlink/?LinkID=699322)
-*   [Read more on the documentation site](https://go.microsoft.com/fwlink/?LinkID=699323)
 
-## Run & Deploy
+======================
+etc
+======================
 
-*   [Run your app](https://go.microsoft.com/fwlink/?LinkID=517851)
-*   [Run tools such as EF migrations and more](https://go.microsoft.com/fwlink/?LinkID=517853)
-*   [Publish to Microsoft Azure Web Apps](https://go.microsoft.com/fwlink/?LinkID=398609)
+dotnet restore
+dotnet run
+dotnet watch
+dotnet pack (makes a nuget package) that can be copied into c:\nuget and used by your other projects by adding them to project.json
 
-We would love to hear your [feedback](https://go.microsoft.com/fwlink/?LinkId=518015)
+$env:ASPNETCORE_ENVIRONMENT = "Development"
+dotnet ef migrations add ...
+dotnet ef database
+
+-------------------------------
+Yoman - generator omnisharp.net
+-------------------------------
+npm install -g generator
+yo aspnet
+	webapi
+
+cd Controller
+yo aspnet:webapicontroller
+
+cd Models
+yo aspnet:Class
+
+----------------------------
+nuget
+----------------------------
+nuget sources add -name LocalPackages -source "c:\nuget"
+
+
+-----------------------------
+github
+-----------------------------
+echo "# mcgill.web" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/jecourtney/mcgill.web.git
+git push -u origin master

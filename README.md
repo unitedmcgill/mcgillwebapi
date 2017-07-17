@@ -1,6 +1,6 @@
-==================================
+-------------------------
 Local development machine
-==================================
+-------------------------
 c:\d-drive\project\core\McGill.Web\code .
 c:\d-drive\project\core\McGillWebAPI\code .
 c:\d-drive\project\angular2\unitedmcgill\code .
@@ -47,7 +47,9 @@ Add
     <PackageReference Include="Microsoft.Net.Http.Server" Version="1.1.2" />
 to .csproj
 
-Call the UseWebListener extension method on WebHostBuilder in your Main method, specifying any WebListener options and settings that you need in Program.cs
+Call the UseWebListener extension method on WebHostBuilder in your Main method, specifying any WebListener options and settings that you need in 
+
+Program.cs
                 .UseWebListener(options =>
                 {
                         options.ListenerSettings.Authentication.Schemes = AuthenticationSchemes.None;

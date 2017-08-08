@@ -25,7 +25,8 @@ namespace McGillWebAPI.Controllers
     {   
         // GET list of applicants
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Policy = "DisneyUser")]  // I'm just using the example and never changed DisneyUser :)
+        // [AllowAnonymous]
         public IEnumerable<EmploymentApp> Get()
         {
             // AirSilenceContext context = new AirSilenceContext();
@@ -42,7 +43,7 @@ namespace McGillWebAPI.Controllers
 
         // GET api/applicant/15
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Policy = "DisneyUser")]
         public EmploymentApp Get(int id)
         {
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
@@ -55,7 +56,7 @@ namespace McGillWebAPI.Controllers
 
         // POST api/applicant
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Policy = "DisneyUser")]
         public IActionResult Post([FromBody] EmploymentApp app )
         {
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
@@ -69,9 +70,28 @@ namespace McGillWebAPI.Controllers
 
         // PUT api/applicant/766
         [HttpPut("{id}")]
-        [AllowAnonymous]
+        [Authorize(Policy = "DisneyUser")]
         public IActionResult Put(int id, [FromBody] EmploymentApp app)
         {
+            // Convert SSNs
+            // string[] lines = System.IO.File.ReadAllLines(@"C:\temp\ssn.txt");
+            // foreach( string line in lines)
+            // {
+            //     string[] items = line.Split(' ');
+            //     int myId;
+            //     UMCLib.TryConvertToInt32(items[0], out myId);
+            //     string encSSN = OnlineAppController.EncryptSSN(items[1]);
+            //     //string decryptSSN = OnlineAppController.DecryptSSN(encSSN);
+            //     EmploymentApp mod = Get(myId);
+            //     using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
+            //     {
+            //         mod.EmploymentAppId = myId;
+            //         mod.SectionC.Ssn = encSSN;
+            //         umc.EmploymentApp.Update(mod);
+            //         umc.SaveChanges();
+            //     }
+            // }
+
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
             {
                 app.EmploymentAppId = id;
@@ -84,7 +104,7 @@ namespace McGillWebAPI.Controllers
 
         // DELETE api/applicant/766
         [HttpDelete("{id}")]
-        [AllowAnonymous]
+        [Authorize(Policy = "DisneyUser")]
         public IActionResult Delete(int id)
         {
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )

@@ -35,7 +35,7 @@ namespace McGillWebAPI.Controllers
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Get([FromForm] ApplicationUser applicationUser)
+    public async Task<IActionResult> Post([FromBody] ApplicationUser applicationUser)
     {
       var identity = await GetClaimsIdentity(applicationUser);
       if (identity == null)
@@ -105,8 +105,8 @@ namespace McGillWebAPI.Controllers
     /// </summary>
     private static Task<ClaimsIdentity> GetClaimsIdentity(ApplicationUser user)
     {
-      if (user.UserName == "MickeyMouse" &&
-          user.Password == "MickeyMouseIsBoss123")
+      if (user.UserName == "Administrator" &&
+          user.Password == "D!lbert")
       {
         return Task.FromResult(new ClaimsIdentity(new GenericIdentity(user.UserName, "Token"),
           new[]

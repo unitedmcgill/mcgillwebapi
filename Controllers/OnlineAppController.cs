@@ -23,9 +23,9 @@ namespace McGillWebAPI.Controllers
     [Route("api/[controller]")]
     public class OnlineAppController : Controller
     {   
-        private static string _keyString = "using ( UnitedMcGillContext umc = new UnitedMcGillContext() )";
+        private static string _keyString = "using ( UnitedMc";
 
-        private static string EncryptSSN( string sSSN )
+        public static string EncryptSSN( string sSSN )
         {
             var key = Encoding.UTF8.GetBytes(_keyString);
 
@@ -56,7 +56,7 @@ namespace McGillWebAPI.Controllers
             }          
         }
 
-        private static string DecryptSSN( string sSSN )
+        public static string DecryptSSN( string sSSN )
         {
             var fullCipher = Convert.FromBase64String(sSSN);
 
@@ -107,6 +107,7 @@ namespace McGillWebAPI.Controllers
                                                 .Include("SectionF")
                                                 .First(t => t.Code == code);
                     // Dycrypt SSN
+                    app.SectionC.Ssn = DecryptSSN(app.SectionC.Ssn);
                     return app;
                 }
 
@@ -122,70 +123,16 @@ namespace McGillWebAPI.Controllers
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
             {
                 app.EmploymentAppId = id;
+                
                 // Encrypt SSN
-
+                app.SectionC.Ssn = EncryptSSN(app.SectionC.Ssn);
+                
                 umc.EmploymentApp.Update(app);
                 umc.SaveChanges();
             }
 
-            return Ok();
+            return Ok(Json("Success"));
         }
-
-        public static string GenerateXML(Dictionary<string, string> appValues)
-        {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.InsertBefore(xmlDoc.CreateXmlDeclaration("1.0", "ISO-8859-1", String.Empty), xmlDoc.DocumentElement);
-
-            XmlElement dataset = xmlDoc.CreateElement("NewDataSet");
-            xmlDoc.AppendChild(dataset);
-
-            XmlElement application = xmlDoc.CreateElement("application");
-            dataset.AppendChild(application);
-
-            foreach (KeyValuePair<string, string> kvPair in appValues)
-            {
-                string sXMLName = kvPair.Key;
-                string sXMLValue = kvPair.Value;
-                XmlNode propNode = application.AppendChild(xmlDoc.CreateElement(sXMLName));
-
-                if (sXMLName.Equals("agree_time", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    double dSeconds = UMCLib.ConvertToDouble(sXMLValue);
-
-                    if (dSeconds != 0D)
-                    {
-                        DateTime agreeDate = new DateTime(1970, 01, 01).AddSeconds(dSeconds);
-                        propNode.AppendChild(xmlDoc.CreateTextNode(agreeDate.ToString("MMMM dd, yyyy")));
-                    }
-                }
-                else if (sXMLName.Equals("ssn", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    propNode.AppendChild(xmlDoc.CreateTextNode(DecryptSSN(sXMLValue)));
-                }
-                else if (!String.IsNullOrEmpty(sXMLValue))
-                {
-                    propNode.AppendChild(xmlDoc.CreateTextNode(sXMLValue));
-                }
-            }
-
-            string sXMLFile = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
-            var outFile = System.IO.File.Create(sXMLFile);
-            var saveStream = new System.IO.StreamWriter(outFile);
-            xmlDoc.Save(saveStream);
-
-            // Remove illegal report characters
-            string sContents = System.IO.File.ReadAllText(sXMLFile);
-            sContents = sContents.Replace("&amp;", "&");
-            sContents = sContents.Replace("&lt;", String.Empty);
-            sContents = sContents.Replace("&gt;", String.Empty);
-            sContents = sContents.Replace(" &amp; ", " and ");
-            sContents = sContents.Replace("&amp;", " and ");
-            sContents = sContents.Replace(" & ", " and ");
-            sContents = sContents.Replace("&", " and ");
-
-            System.IO.File.WriteAllText(sXMLFile, sContents);
-
-            return sXMLFile;
-        }        
+     
     }
 }

@@ -29,7 +29,7 @@ namespace McGillWebAPI.Services
             emailMessage.From.Add(new MailboxAddress(name, from));
             emailMessage.To.Add(new MailboxAddress("",to));
             emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart("plain") { Text = body};
+            emailMessage.Body = new TextPart("html") { Text = body};
 
             using ( var client = new SmtpClient())
             {

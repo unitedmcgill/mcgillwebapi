@@ -33,8 +33,9 @@ namespace McGillWebAPI.Controllers
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
             {
                 var apps = umc.EmploymentApp
-                        .OrderBy(t => t.LastName)
-                        .ThenBy(t => t.FirstName)
+                        .OrderByDescending(t => t.Created)
+                        .ThenByDescending(t => t.LastUpdate)
+                        .ThenBy(t => t.LastName)
                         .ToList();
                 
                 return apps;

@@ -64,6 +64,9 @@ namespace McGillWebAPI.Model
         public int? Insurance { get; set; }
         public int? Crime { get; set; }
         public string CrimeExplain { get; set; }
+        public string LicenseExpirationOne { get; set; }
+        public string LicenseExpirationTwo { get; set; }
+        public string LicenseExpirationThree { get; set; }
 
         public virtual EmploymentApp EmploymentApp { get; set; }
     }

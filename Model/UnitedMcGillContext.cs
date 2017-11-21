@@ -199,6 +199,12 @@ namespace McGillWebAPI.Model
 
                 entity.Property(e => e.LawfullyEmployable).HasDefaultValueSql("'-1'");
 
+                entity.Property(e => e.LicenseExpirationOne).HasColumnType("varchar(10)");
+
+                entity.Property(e => e.LicenseExpirationThree).HasColumnType("varchar(10)");
+
+                entity.Property(e => e.LicenseExpirationTwo).HasColumnType("varchar(10)");
+
                 entity.Property(e => e.LicenseExplain).HasColumnType("varchar(75)");
 
                 entity.Property(e => e.LicenseNumberFour).HasColumnType("varchar(12)");

@@ -7,6 +7,6 @@ namespace McGillWebAPI.Services
 {
     public interface IMailService
     {
-        Task SendMail( string to, string name, string from, string subject, string body);
+        Task SendMail( string to, string name, string from, string subject, string body, string cc);
     }
 }

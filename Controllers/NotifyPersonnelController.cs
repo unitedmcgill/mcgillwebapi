@@ -16,7 +16,7 @@ namespace McGillWebAPI.Controllers
     // [Authorize]  use OAuth2 flows 
     // JwtBearer -- Microsoft.AspNetCore.AuthenticationJwtBearer to package.json
     
-    public class ContactUsController : Controller
+    public class NotifyPersonnelController : Controller
     {
         //private MailService _mailService = new MailService();
         
@@ -24,14 +24,14 @@ namespace McGillWebAPI.Controllers
         private IConfigurationRoot _config;
 
         // Inject our mailservice (mapped in Startup.cs)
-        public ContactUsController (IMailService mailService, IConfigurationRoot config)
+        public NotifyPersonnelController (IMailService mailService, IConfigurationRoot config)
         {
             _mailService = mailService;
             _config = config;
         }
 
-        // POST api/contactus
-        // Is nice to use a ContactUsViewModel instead of the Models
+        // POST api/notifypersonnel
+        // Is nice to use a ViewModel instead of the Models
         // Then put [Required], etc. on the ViewModel instead of the Model
         // This will allow you to hide the information like Id, etc.
         // basically stuff not used in the view
@@ -45,12 +45,12 @@ namespace McGillWebAPI.Controllers
             // Do something
             if (ModelState.IsValid)
             {
-                await _mailService.SendMail(_config["MailSettings:ToAddress"], 
-                theContact.Name, theContact.Email, "ContactUs Form-"+theContact.ForWebsiteDomain, 
-                theContact.TheMessage + "\n My phone:" + theContact.Phone + 
-                "\n My company:" + theContact.Company,null);
+                // Email Kathy for now
+                await _mailService.SendMail(theContact.Email, 
+                theContact.Name, "personnel@unitedmcgill.com", "Application id#"+theContact.Company+" was saved", 
+                theContact.TheMessage, null);
 
-                return Created($"api/contactus/{theContact.Name}", theContact);
+                return Created($"api/notifypersonnel/{theContact.Name}", theContact);
 
                 // If you need to save to the Database see link
                 // Use AutoMappers, they are cool!
@@ -60,22 +60,5 @@ namespace McGillWebAPI.Controllers
 
             return BadRequest(ModelState);
         }
-
-        // GET api/contactus/5
-        // [HttpGet("{id}")]  // FYI, {id:int} inline constraint will force the parameter to only match if an int parameter is specified
-        // [AllowAnonymous]
-        // public Contact Get(int id)
-        // {
-        //     return null; //Get().Where( r => r.Id == id).FirstOrDefault();;
-        // }
-
-        // [HttpGet]
-        // [AllowAnonymous]
-        // public IActionResult Get(){
-        //     // If soemthing bad happended, we can return an error
-        //     // return BadRequest("bad things happened")  // 400 status w/ message is returned
-
-        //     return Ok(Json(new Contact() { Id = 1, Name = "Joe", TheMessage = "Hello there!"} ));
-        // }
     }
 }

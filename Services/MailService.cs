@@ -20,12 +20,17 @@ namespace McGillWebAPI.Services
             _config = config;
         }
 
-        public async Task SendMail(string to, string name, string from, string subject, string body)
+        public async Task SendMail(string to, string name, string from, string subject, string body, string cc)
         {
             //throw new NotImplementedException();
             //Debug.WriteLine($"Sending Mail: To: {to} From: {from} Subject: {subject}");
             var emailMessage = new MimeMessage();
             
+            if ( !String.IsNullOrEmpty(cc) )
+            {
+                emailMessage.Cc.Add(new MailboxAddress("",cc));
+            }
+
             emailMessage.From.Add(new MailboxAddress(name, from));
             emailMessage.To.Add(new MailboxAddress("",to));
             emailMessage.Subject = subject;

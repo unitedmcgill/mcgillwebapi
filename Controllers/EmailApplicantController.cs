@@ -40,7 +40,7 @@ namespace McGillWebAPI.Controllers
             {
                 await _mailService.SendMail(theContact.Email, 
                 theContact.Name, "personnel@unitedmcgill.com", "A message from Personnel Services at McGill", 
-                theContact.TheMessage);
+                theContact.TheMessage, "kcauley@unitedmcgill.com");
 
                 return Created($"api/emailapplicant/{theContact.Name}", theContact);
 

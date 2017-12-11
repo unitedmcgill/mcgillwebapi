@@ -107,7 +107,11 @@ namespace McGillWebAPI.Controllers
                                                 .Include("SectionF")
                                                 .First(t => t.Code == code);
                     // Dycrypt SSN
-                    app.SectionC.Ssn = DecryptSSN(app.SectionC.Ssn);
+                    if ( app.SectionC != null )
+                    {
+                        app.SectionC.Ssn = DecryptSSN(app.SectionC.Ssn);
+                    }
+                    
                     return app;
                 }
 

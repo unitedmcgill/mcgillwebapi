@@ -58,6 +58,8 @@ namespace McGillWebAPI.Controllers
 
         public static string DecryptSSN( string sSSN )
         {
+            if ( String.IsNullOrEmpty(sSSN) ) return "";
+
             var fullCipher = Convert.FromBase64String(sSSN);
 
             var iv = new byte[16];
@@ -125,9 +127,7 @@ namespace McGillWebAPI.Controllers
         public IActionResult Put(int id, [FromBody] EmploymentApp app)
         {
             using ( UnitedMcGillContext umc = new UnitedMcGillContext() )
-            {
-                app.EmploymentAppId = id;
-                
+            {              
                 // Encrypt SSN
                 app.SectionC.Ssn = EncryptSSN(app.SectionC.Ssn);
                 

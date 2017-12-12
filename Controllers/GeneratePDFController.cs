@@ -103,7 +103,7 @@ namespace McGillWebAPI.Controllers
             foreach( string prop in empAppProps )
             {
                 PropertyInfo pi = empAppType.GetProperty(prop);
-                xmlValues.Add(JavascriptNameToXML(prop),pi.GetValue(app).ToString());
+                xmlValues.Add(JavascriptNameToXML(prop),safeExtract(app,pi));
             }
 
             foreach( string prop in sectionAProps )
@@ -162,6 +162,15 @@ namespace McGillWebAPI.Controllers
             return Ok(value);
         }
 
+        private string safeExtract(EmploymentApp app, PropertyInfo pi)
+        {
+            if ( pi.GetValue(app) != null)
+            {
+                return pi.GetValue(app).ToString();
+            }
+
+            return "";
+        }
         public static string GenerateXML(Dictionary<string, string> appValues)
         {
             XmlDocument xmlDoc = new XmlDocument();

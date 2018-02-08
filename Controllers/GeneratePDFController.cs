@@ -188,7 +188,7 @@ namespace McGillWebAPI.Controllers
                 string sXMLValue = kvPair.Value;
                 XmlNode propNode = application.AppendChild(xmlDoc.CreateElement(sXMLName));
 
-                if (sXMLName.Equals("AgreeTime", StringComparison.CurrentCultureIgnoreCase))
+                if (sXMLName.Equals("agree_time", StringComparison.CurrentCultureIgnoreCase))
                 {
                     double dSeconds = UMCLib.ConvertToDouble(sXMLValue);
 
